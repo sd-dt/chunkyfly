@@ -174,3 +174,26 @@ powershell -File ghrepo\scripts\gh-sync.ps1 -Message "本次改了什么"
 首次实跑：commit `346ce719e5b164d793e826f7ea6850d7778ec611`，Release `v2.3.1` 附件替换为同一份 `chunkyfly-2.3.1+26.2.jar`（65402 B，sha256 `44766a1e…`）。
 
 > 约定细节：**改到源码/资源/构建脚本级别的大型修改**才推（每次同步都会产生一个线上 commit 与可能的 Release）；纯本地实验、调试输出不进仓库。发布件（jar）只走 Release，不进仓库。README 与 `deps/README.md`、`LICENSE`、`.gitignore` 由 `ghrepo\` 里手工维护（镜像步骤不会覆盖它们）。
+>
+> 脚本自身的两个坑（首次实跑时踩到并已修）：
+> 1. 版本号必须读**工作区**的 `versions\26.2\resources\fabric.mod.json` —— 读 `ghrepo\` 里那份是旧的（镜像在第 4 步才做），会出现"编了 2.3.2、却把 jar 传去 v2.3.1"。
+> 2. `gh release view <tag>` 在 tag 不存在时会往 **stderr** 写一行，PS 5.1 在 `$ErrorActionPreference='Stop'` 下会把它当致命错误 → 判断"Release 是否存在"前要临时把 `$ErrorActionPreference` 设成 `Continue`。
+>
+> 另一个环境限制：**沙箱进程写不进工作区里早前（非沙箱时期）创建的目录**（`versions\26.2\build`、`dist`、`scripts` 等被系统拒绝，属完整性级别问题，不是 ACL —— 见上文 ACL 结论）。所以「编译 + 同步」这条命令目前需要**一次提权**（`danger-full-access`）才能跑通；只镜像文档/脚本（`-SkipBuild -SkipVerify`）在沙箱内即可完成。
+
+---
+
+## 2026-10-03 2.3.2 —— 模组图标 + 简介指向 GitHub
+
+用户给了头像图，并要求信息面板里的简介指向 GitHub 仓库。
+
+| 项 | 值 |
+|---|---|
+| 图标 | 原图 2048×2048 → **512×512 PNG**（Pillow LANCZOS），291,815 B，放在 `versions\{26.2,1.21.11}\resources\assets\chunkyfly\icon.png` |
+| `fabric.mod.json` | 新增 `"icon": "assets/chunkyfly/icon.png"`；`description` 末尾加「项目地址：https://github.com/sd-dt/chunkyfly-Azusa」；新增 `contact`（`homepage`/`sources`/`issues` 都指向仓库）；26.2 线版本 → **2.3.2+26.2** |
+| 产物 | `versions\26.2\dist\chunkyfly-2.3.2+26.2.jar`（36 条目，357,763 B，sha256 `ee1d1c19…`）；javac exit=0，逐条目重建校验通过 |
+| Release | <https://github.com/sd-dt/chunkyfly-Azusa/releases/tag/v2.3.2> |
+| 线上提交 | `2367b84f`（首推，含图标与新元数据）、`a300f184`、`985a43c4`（修完同步脚本后重推） |
+
+> 说明：`contact` 里的链接在 Fabric 模组信息面板里是可点击的；`description` 里的 URL 是纯文本，只是让人一眼看到仓库地址。
+> 图标是二进制文件，`write` 工具写不了 → 用 Python(Pillow) 生成后经一次提权写进 `resources\`（沙箱与 Node 都被系统拒绝写该目录）。
