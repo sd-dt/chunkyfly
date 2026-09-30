@@ -3,11 +3,17 @@
   "id": "chunkyfly",
   "version": "1.3.0",
   "name": "ChunkyFly",
-  "description": "类 Chunky 的客户端模组：自动用鞘翅飞行来加载/生成区块，自动从快捷栏与背包取非爆炸烟花，按最快方式飞行，左上角显示进度。",
+  "description": "类 Chunky 的客户端模组：自动用鞘翅飞行来加载/生成区块，自动从快捷栏与背包取非爆炸烟花，按最快方式飞行，左上角显示进度。\n项目地址：https://github.com/sd-dt/chunkyfly-Azusa",
   "authors": [
     "sd_dt"
   ],
+  "contact": {
+    "homepage": "https://github.com/sd-dt/chunkyfly-Azusa",
+    "sources": "https://github.com/sd-dt/chunkyfly-Azusa",
+    "issues": "https://github.com/sd-dt/chunkyfly-Azusa/issues"
+  },
   "license": "MIT",
+  "icon": "assets/chunkyfly/icon.png",
   "environment": "client",
   "entrypoints": {
     "client": [
