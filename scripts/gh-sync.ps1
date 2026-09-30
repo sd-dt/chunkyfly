@@ -33,7 +33,7 @@ param(
 $ErrorActionPreference = 'Stop'
 $RepoDir = Split-Path -Parent $PSScriptRoot          # ...\ghrepo
 $Ws = Split-Path -Parent $RepoDir                    # ...\<workspace>
-$Md = Join-Path $RepoDir 'versions\26.2\resources\fabric.mod.json'
+$Md = Join-Path $Ws 'versions\26.2\resources\fabric.mod.json'   # 读工作区的版本号（镜像是在第 4 步才做的）
 
 function Step($text) { Write-Host ""; Write-Host ("=== " + $text) }
 

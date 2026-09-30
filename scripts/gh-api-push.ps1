@@ -86,12 +86,19 @@ foreach ($f in $files) {
    Write-Host ("  blob " + $f.Rel)
 }
 
-# 4. tree -> commit -> update ref
+# 4. tree -> commit -> update ref (skip the commit when nothing actually changed)
 $baseTree = (Invoke-GhApi 'GET' "repos/$Repo/git/commits/$head" | ConvertFrom-Json).tree.sha
 $treeSha = (Invoke-GhApi 'POST' "repos/$Repo/git/trees" @{ base_tree = $baseTree; tree = $entries } | ConvertFrom-Json).sha
+
+Write-Host ""
+if ($treeSha -eq $baseTree) {
+   Write-Host "no content change (tree identical) -> no commit created"
+   Write-Host ("repo: https://github.com/" + $Repo + "  branch: " + $Branch)
+   return
+}
+
 $commitSha = (Invoke-GhApi 'POST' "repos/$Repo/git/commits" @{ message = $Message; tree = $treeSha; parents = @($head) } | ConvertFrom-Json).sha
 [void](Invoke-GhApi 'PATCH' "repos/$Repo/git/refs/heads/$Branch" @{ sha = $commitSha; force = $false })
 
-Write-Host ""
 Write-Host ("committed: " + $commitSha)
 Write-Host ("repo: https://github.com/" + $Repo + "  branch: " + $Branch)
