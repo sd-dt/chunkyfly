@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.chunkyfly.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "client": [
+    "MixinClientPacketListener",
+    "MixinClientPlayerEntity",
+    "MixinInGameHud"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

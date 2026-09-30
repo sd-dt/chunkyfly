@@ -1,0 +1,23 @@
+# 编译产物 / IDE
+build/
+out/
+*.class
+*.log
+
+# 本地依赖（版权原因不随仓库分发，见 deps/README.md）
+deps/mc-26.2/
+deps/mc-1.21.11/
+
+# JDK 路径记录（每台机器不同，脚本会自动探测，也可以自己建）
+scripts/jdk-21.path
+scripts/jdk-25.path
+
+# 发布件（走 GitHub Releases）
+versions/*/dist/*.jar
+
+# 系统 / 编辑器
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.iml

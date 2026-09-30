@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "id": "chunkyfly",
+  "version": "2.3.1+26.2",
+  "name": "ChunkyFly",
+  "description": "类 Chunky 的客户端模组：自动用鞘翅飞行来加载/生成区块，自动从快捷栏与背包取非爆炸烟花，按最快方式飞行，左上角显示进度。",
+  "authors": [
+    "sd_dt"
+  ],
+  "license": "MIT",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "com.chunkyfly.ChunkyFlyMod"
+    ]
+  },
+  "mixins": [
+    "chunkyfly.mixins.json",
+    "chunkyfly.uniform.mixins.json",
+    "chunkyfly.chat.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.19.5",
+    "minecraft": "~26.2-"
+  },
+  "recommends": {
+    "fabric-command-api-v2": "*"
+  }
+}
