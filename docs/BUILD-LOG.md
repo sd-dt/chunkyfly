@@ -149,3 +149,28 @@ powershell -File scripts\build.ps1 -Line 1.21.11        # 旧线（存档）：i
 1. **工作区 ACL 完全正常** —— 用 `diagnose-windows-sandbox-acl` 技能脚本查过（`docs\github` 尚未创建 → 只做检查；工作区根含子树 45 个对象、`writeDac`/`writeOwner` 齐全、无外来包条目 → 结论 `NOT_THIS_CLASS`，脚本零改动）。
    `pwsh` 工具写不进 `docs\github\repo` 是**沙箱完整性级别**问题（DSH 写入通道创建的是中完整性对象，沙箱进程写不进去），而在**沙箱自己创建的目录**（`ghrepo\`）里读写与复制全部正常 —— 所以仓库目录最终放在 `ghrepo\`。
 2. `gh repo create --source .` 在本会话里不认当前目录（改用 `gh api --method POST user/repos` 直接建仓）；`--jq` 表达式里**不能带 `|`**（PowerShell 会拆参数 → `accepts 1 arg(s), received N`）；脚本里带中文的 JSON body 要先写成临时文件再 `--input`，避免经控制台代码页转码。
+
+---
+
+## 2026-10-03 约定：以后每次大型修改后**自动同步 GitHub**
+
+用户要求「以后每次大型修改后都自动同步 github」，无需再问。已固化为一条命令：
+
+```powershell
+powershell -File ghrepo\scripts\gh-sync.ps1 -Message "本次改了什么"
+```
+
+脚本（`ghrepo\scripts\gh-sync.ps1`，纯 ASCII —— PS 5.1 读无 BOM 的 `.ps1` 会按本地代码页解码，带中文必须存 UTF-8 带 BOM）依次做六件事：
+
+| 步骤 | 内容 |
+|---|---|
+| 1 | `scripts\build.ps1` 重编 26.2 线（`-SkipBuild` 可跳过） |
+| 2 | `scripts\verify-rebuild.ps1` 逐条目重建校验（`-SkipVerify` 可跳过） |
+| 3 | 从 `fabric.mod.json` 读版本号、定位 `dist\chunkyfly-<版本>.jar`，tag = `v<主版本>`（`2.4.0+26.2` → `v2.4.0`） |
+| 4 | 镜像到 `ghrepo\`：两条线的 `src`/`resources`、`docs\BUILD-LOG.md`、`tools\route-coverage-sim.py`、四个构建脚本 |
+| 5 | `gh-api-push.ps1` 走 API 建 commit（`git push` 在本机不通） |
+| 6 | Release：tag 已存在就 `gh release upload --clobber` 换附件，否则新建（说明优先取 `docs\RELEASE-NOTES-v<tag>.md`） |
+
+首次实跑：commit `346ce719e5b164d793e826f7ea6850d7778ec611`，Release `v2.3.1` 附件替换为同一份 `chunkyfly-2.3.1+26.2.jar`（65402 B，sha256 `44766a1e…`）。
+
+> 约定细节：**改到源码/资源/构建脚本级别的大型修改**才推（每次同步都会产生一个线上 commit 与可能的 Release）；纯本地实验、调试输出不进仓库。发布件（jar）只走 Release，不进仓库。README 与 `deps/README.md`、`LICENSE`、`.gitignore` 由 `ghrepo\` 里手工维护（镜像步骤不会覆盖它们）。
