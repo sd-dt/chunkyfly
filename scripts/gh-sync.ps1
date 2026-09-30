@@ -104,8 +104,14 @@ if ($LASTEXITCODE -ne 0) { throw "gh-api-push failed (exit $LASTEXITCODE)" }
 if (-not $NoRelease -and (Test-Path -LiteralPath $jar)) {
    Step ("release " + $tag)
    $notes = Join-Path $RepoDir ("docs\RELEASE-NOTES-" + $tag + ".md")
+   # 「release 不存在」时 gh 会往 stderr 写一行，PS 5.1 在 ErrorActionPreference=Stop 下会把它当致命错误 —— 临时放开
+   $eap = $ErrorActionPreference
+   $ErrorActionPreference = 'Continue'
    & $Gh release view $tag --repo $Repo *> $null
-   if ($LASTEXITCODE -eq 0) {
+   $releaseExists = ($LASTEXITCODE -eq 0)
+   $ErrorActionPreference = $eap
+
+   if ($releaseExists) {
       Write-Host "  release exists -> replacing the asset"
       & $Gh release upload $tag $jar --clobber --repo $Repo
    } else {
