@@ -1,0 +1,12 @@
+{
+  "required": false,
+  "minVersion": "0.8",
+  "package": "com.chunkyfly.mixin",
+  "compatibilityLevel": "JAVA_25",
+  "client": [
+    "MixinHudChat"
+  ],
+  "injectors": {
+    "defaultRequire": 0
+  }
+}
