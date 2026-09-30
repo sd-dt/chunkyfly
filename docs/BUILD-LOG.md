@@ -129,3 +129,23 @@ powershell -File scripts\build.ps1 -Line 1.21.11        # 旧线（存档）：i
 - 飞行期间不要同时开打印机的自动放置（`workingSwitch`），两者都会抢视角
 - 26.2 的 mixin 注入点已做静态签名校验（`javap` 对着 `deps\mc-26.2\26.2-client.jar` 核对），
   但**运行时行为**仍需在真实 26.2 实例里验证
+
+---
+
+## 2026-10-03 GitHub 项目建立（chunkyfly-Azusa）
+
+用户要求「把这个模组建立一个新项目上传到 GitHub」。成果：
+
+| 项 | 值 |
+|---|---|
+| 仓库 | <https://github.com/sd-dt/chunkyfly-Azusa>（public，MIT） |
+| 推送目录 | `ghrepo\`（两条线源码 34 个 java + 资源 + 脚本 + 文档 + LICENSE + README，本地 53 个文件） |
+| 线上提交 | `9209781c`（种子提交 + 其余文件）、`76809b12`（API 推送脚本与 Release 说明） |
+| Release | <https://github.com/sd-dt/chunkyfly-Azusa/releases/tag/v2.3.1>，附件 `chunkyfly-2.3.1+26.2.jar`（65402 B） |
+| 推送方式 | **本机 `git push` 不通**（github.com:443 连接被重置：`schannel: SEC_E_NO_CREDENTIALS`、`Recv failure: Connection was reset`），改用 GitHub API（blobs → tree → commit → ref）；**空仓库要先经 Contents API 播种一个文件**，否则 Git Data API 返回 409 `Git Repository is empty`。脚本：`ghrepo\scripts\gh-api-push.ps1` |
+
+过程中确认的两件事：
+
+1. **工作区 ACL 完全正常** —— 用 `diagnose-windows-sandbox-acl` 技能脚本查过（`docs\github` 尚未创建 → 只做检查；工作区根含子树 45 个对象、`writeDac`/`writeOwner` 齐全、无外来包条目 → 结论 `NOT_THIS_CLASS`，脚本零改动）。
+   `pwsh` 工具写不进 `docs\github\repo` 是**沙箱完整性级别**问题（DSH 写入通道创建的是中完整性对象，沙箱进程写不进去），而在**沙箱自己创建的目录**（`ghrepo\`）里读写与复制全部正常 —— 所以仓库目录最终放在 `ghrepo\`。
+2. `gh repo create --source .` 在本会话里不认当前目录（改用 `gh api --method POST user/repos` 直接建仓）；`--jq` 表达式里**不能带 `|`**（PowerShell 会拆参数 → `accepts 1 arg(s), received N`）；脚本里带中文的 JSON body 要先写成临时文件再 `--input`，避免经控制台代码页转码。
