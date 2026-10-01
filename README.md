@@ -161,3 +161,7 @@ chunkyfly/
 [MIT](LICENSE)。可自由使用、修改、再分发，保留版权与许可声明即可。
 
 模组里对原版行为的名称与机制参考了 **Minecraft**（Mojang）与 **Fabric**（FabricMC）的公开 API；"类 Chunky" 指功能形态参考了 Chunky 系列工具的设计思路，本模组为独立实现、不含其代码。
+
+### 图标来源
+
+模组图标是**二次创作**：五角星取自 **Chunky**（<https://github.com/pop4959/Chunky>，作者 pop4959，**GPLv3**）的标志素材，中间的鞘翅是 **Minecraft** 原版物品贴图（© Mojang）。两处都不是本项目的原创素材 —— 仅作个人/社区标识用途；如果要把本项目或其图标用于商业或需要严格许可的场合，请自行替换为原创图（`versions/26.2/resources/assets/chunkyfly/icon.png`，512×512 PNG）。除图标外的全部代码与文档均为本项目原创，按 MIT 授权。

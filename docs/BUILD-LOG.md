@@ -197,3 +197,21 @@ powershell -File ghrepo\scripts\gh-sync.ps1 -Message "本次改了什么"
 
 > 说明：`contact` 里的链接在 Fabric 模组信息面板里是可点击的；`description` 里的 URL 是纯文本，只是让人一眼看到仓库地址。
 > 图标是二进制文件，`write` 工具写不了 → 用 Python(Pillow) 生成后经一次提权写进 `resources\`（沙箱与 Node 都被系统拒绝写该目录）。
+
+---
+
+## 2026-10-03 2.3.3 —— 图标换成「五角星 + 鞘翅」
+
+用户要求「在 chunky 模组的五角星中间 p 上一个鞘翅」，随后两次调大鞘翅，最终选了 **512px** 那版。
+
+| 元素 | 来源 | 处理 |
+|---|---|---|
+| 五角星（内部是地图纹理） | **Chunky** 模组标志（pop4959，**GPLv3**），从其 jar 里取 `icon.png`（256×256） | LANCZOS 放大到 1024 |
+| 鞘翅 | **Minecraft** 原版 `assets/minecraft/textures/item/elytra.png`（16×16） | NEAREST 整数倍放大 **32× → 512px**（16× / 24× 两版都渲染过，用户选了 32×） |
+| 描边 + 阴影 | 鞘翅 alpha 掩码膨胀 10px 填深色 + 高斯模糊 26 作投影 | 让鞘翅在蓝绿地图纹理上也能看清 |
+
+- 贴的位置 = **星形 alpha 掩码的重心**（256 基准下 `(127.4, 141.0)`），即"五角星中间"
+- 脚本：`icon-work\compose5.py`（最终版，同时输出 1024/512/256 并把 512 写进两条线的 `resources\assets\chunkyfly\icon.png`）
+- 产物：`versions\26.2\dist\chunkyfly-2.3.3+26.2.jar`；Release <https://github.com/sd-dt/chunkyfly-Azusa/releases/tag/v2.3.3>
+- ⚠️ **素材归属**：五角星是 GPLv3 项目 Chunky 的标志素材、鞘翅是 Mojang 原版贴图，**都不是原创**，仅作个人/社区标识用途；仓库 `README.md` 的「图标来源」一节已写明，要商用/严格许可场合请自行替换。
+- 环境备注：本会话沙箱的 `--temp` 目录被清空过两次（`dsh-*`），表现为 `pwsh` 直接拒绝运行；用 DSH 写入通道在 `%LOCALAPPDATA%\Temp\<那个目录>\.keep` 写一个占位文件即可恢复。

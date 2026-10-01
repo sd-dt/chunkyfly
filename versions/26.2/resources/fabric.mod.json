@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "chunkyfly",
-  "version": "2.3.2+26.2",
+  "version": "2.3.3+26.2",
   "name": "ChunkyFly",
   "description": "类 Chunky 的客户端模组：自动用鞘翅飞行来加载/生成区块，自动从快捷栏与背包取非爆炸烟花，按最快方式飞行，左上角显示进度，跑完自动返航降落。\n项目地址：https://github.com/sd-dt/chunkyfly-Azusa",
   "authors": [
