@@ -132,16 +132,16 @@ powershell -File scripts\build.ps1 -Line 1.21.11        # 旧线（存档）：i
 
 ---
 
-## 2026-10-03 GitHub 项目建立（chunkyfly-Azusa）
+## 2026-10-03 GitHub 项目建立（chunkyfly）
 
 用户要求「把这个模组建立一个新项目上传到 GitHub」。成果：
 
 | 项 | 值 |
 |---|---|
-| 仓库 | <https://github.com/sd-dt/chunkyfly-Azusa>（public，MIT） |
+| 仓库 | <https://github.com/sd-dt/chunkyfly>（public，MIT） |
 | 推送目录 | `ghrepo\`（两条线源码 34 个 java + 资源 + 脚本 + 文档 + LICENSE + README，本地 53 个文件） |
 | 线上提交 | `9209781c`（种子提交 + 其余文件）、`76809b12`（API 推送脚本与 Release 说明） |
-| Release | <https://github.com/sd-dt/chunkyfly-Azusa/releases/tag/v2.3.1>，附件 `chunkyfly-2.3.1+26.2.jar`（65402 B） |
+| Release | <https://github.com/sd-dt/chunkyfly/releases/tag/v2.3.1>，附件 `chunkyfly-2.3.1+26.2.jar`（65402 B） |
 | 推送方式 | **本机 `git push` 不通**（github.com:443 连接被重置：`schannel: SEC_E_NO_CREDENTIALS`、`Recv failure: Connection was reset`），改用 GitHub API（blobs → tree → commit → ref）；**空仓库要先经 Contents API 播种一个文件**，否则 Git Data API 返回 409 `Git Repository is empty`。脚本：`ghrepo\scripts\gh-api-push.ps1` |
 
 过程中确认的两件事：
@@ -190,9 +190,9 @@ powershell -File ghrepo\scripts\gh-sync.ps1 -Message "本次改了什么"
 | 项 | 值 |
 |---|---|
 | 图标 | 原图 2048×2048 → **512×512 PNG**（Pillow LANCZOS），291,815 B，放在 `versions\{26.2,1.21.11}\resources\assets\chunkyfly\icon.png` |
-| `fabric.mod.json` | 新增 `"icon": "assets/chunkyfly/icon.png"`；`description` 末尾加「项目地址：https://github.com/sd-dt/chunkyfly-Azusa」；新增 `contact`（`homepage`/`sources`/`issues` 都指向仓库）；26.2 线版本 → **2.3.2+26.2** |
+| `fabric.mod.json` | 新增 `"icon": "assets/chunkyfly/icon.png"`；`description` 末尾加「项目地址：https://github.com/sd-dt/chunkyfly」；新增 `contact`（`homepage`/`sources`/`issues` 都指向仓库）；26.2 线版本 → **2.3.2+26.2** |
 | 产物 | `versions\26.2\dist\chunkyfly-2.3.2+26.2.jar`（36 条目，357,763 B，sha256 `ee1d1c19…`）；javac exit=0，逐条目重建校验通过 |
-| Release | <https://github.com/sd-dt/chunkyfly-Azusa/releases/tag/v2.3.2> |
+| Release | <https://github.com/sd-dt/chunkyfly/releases/tag/v2.3.2> |
 | 线上提交 | `2367b84f`（首推，含图标与新元数据）、`a300f184`、`985a43c4`（修完同步脚本后重推） |
 
 > 说明：`contact` 里的链接在 Fabric 模组信息面板里是可点击的；`description` 里的 URL 是纯文本，只是让人一眼看到仓库地址。
@@ -212,6 +212,6 @@ powershell -File ghrepo\scripts\gh-sync.ps1 -Message "本次改了什么"
 
 - 贴的位置 = **星形 alpha 掩码的重心**（256 基准下 `(127.4, 141.0)`），即"五角星中间"
 - 脚本：`icon-work\compose5.py`（最终版，同时输出 1024/512/256 并把 512 写进两条线的 `resources\assets\chunkyfly\icon.png`）
-- 产物：`versions\26.2\dist\chunkyfly-2.3.3+26.2.jar`；Release <https://github.com/sd-dt/chunkyfly-Azusa/releases/tag/v2.3.3>
+- 产物：`versions\26.2\dist\chunkyfly-2.3.3+26.2.jar`；Release <https://github.com/sd-dt/chunkyfly/releases/tag/v2.3.3>
 - ⚠️ **素材归属**：五角星是 GPLv3 项目 Chunky 的标志素材、鞘翅是 Mojang 原版贴图，**都不是原创**，仅作个人/社区标识用途；仓库 `README.md` 的「图标来源」一节已写明，要商用/严格许可场合请自行替换。
 - 环境备注：本会话沙箱的 `--temp` 目录被清空过两次（`dsh-*`），表现为 `pwsh` 直接拒绝运行；用 DSH 写入通道在 `%LOCALAPPDATA%\Temp\<那个目录>\.keep` 写一个占位文件即可恢复。

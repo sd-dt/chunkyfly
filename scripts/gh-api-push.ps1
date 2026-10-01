@@ -18,7 +18,7 @@
   and the script fails to parse. The other scripts in this folder are UTF-8 with BOM.
 #>
 param(
-   [string]$Repo = 'sd-dt/chunkyfly-Azusa',
+   [string]$Repo = 'sd-dt/chunkyfly',
    [string]$Branch = 'main',
    [string]$Message = 'Update',
    [string]$Root = (Split-Path -Parent $PSScriptRoot),

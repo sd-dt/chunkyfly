@@ -23,7 +23,7 @@
 #>
 param(
    [Parameter(Mandatory = $true)][string]$Message,
-   [string]$Repo = 'sd-dt/chunkyfly-Azusa',
+   [string]$Repo = 'sd-dt/chunkyfly',
    [string]$Gh = 'C:\Program Files\GitHub CLI\gh.exe',
    [switch]$SkipBuild,
    [switch]$SkipVerify,
