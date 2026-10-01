@@ -215,3 +215,15 @@ powershell -File ghrepo\scripts\gh-sync.ps1 -Message "本次改了什么"
 - 产物：`versions\26.2\dist\chunkyfly-2.3.3+26.2.jar`；Release <https://github.com/sd-dt/chunkyfly/releases/tag/v2.3.3>
 - ⚠️ **素材归属**：五角星是 GPLv3 项目 Chunky 的标志素材、鞘翅是 Mojang 原版贴图，**都不是原创**，仅作个人/社区标识用途；仓库 `README.md` 的「图标来源」一节已写明，要商用/严格许可场合请自行替换。
 - 环境备注：本会话沙箱的 `--temp` 目录被清空过两次（`dsh-*`），表现为 `pwsh` 直接拒绝运行；用 DSH 写入通道在 `%LOCALAPPDATA%\Temp\<那个目录>\.keep` 写一个占位文件即可恢复。
+
+---
+
+## 2026-10-03 2.3.4 —— 仓库改名 + 英文版 README
+
+| 项 | 值 |
+|---|---|
+| 仓库改名 | `sd-dt/chunkyfly-Azusa` → **`sd-dt/chunkyfly`**（API `PATCH /repos/...`；旧链接 GitHub 自动重定向） |
+| 引用替换 | `versions/{26.2,1.21.11}/resources/fabric.mod.json`（简介 + contact 共 8 处）、工作区 `README.md`、`docs\BUILD-LOG.md`、`ghrepo\scripts\{gh-sync,gh-api-push}.ps1` 的默认 `-Repo`、旧 Release 说明 —— 全库扫过后只剩 `RELEASE-NOTES-v2.3.4.md` 里刻意保留的"改名前后"记录 |
+| 英文介绍 | 新增 **`README.en.md`**（中文 README 的完整译文：特性四张表 / 指令表 + 别名 / 安装 / 构建 / 配置 / 注意事项 / 目录结构 / 许可 / 图标归属），两个 README 顶部各加语言切换（`中文 | English`） |
+| 产物 | `chunkyfly-2.3.4+26.2.jar`（205,316 B，sha256 `57340524…`），Release <https://github.com/sd-dt/chunkyfly/releases/tag/v2.3.4>，线上提交 `d9e9b6b1` |
+| 安装 | 四个实例全部换成 2.3.4 |
