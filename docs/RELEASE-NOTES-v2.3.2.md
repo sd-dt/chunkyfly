@@ -8,7 +8,7 @@
 ```
 类 Chunky 的客户端模组：自动用鞘翅飞行来加载/生成区块，自动从快捷栏与背包取非爆炸烟花，
 按最快方式飞行，左上角显示进度，跑完自动返航降落。
-项目地址：https://github.com/sd-dt/chunkyfly-Azusa
+项目地址：https://github.com/sd-dt/chunkyfly
 ```
 
 功能上与 2.3.1 完全一致（只动元数据与资源，没改任何代码）。
